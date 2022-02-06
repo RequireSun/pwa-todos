@@ -1,12 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { isPwa } from './utils/is-pwa';
+import './index.css';
 
 navigator.serviceWorker.register('/pwa-todos/sw.js', { scope: '/pwa-todos/' }).then(reg => console.log(reg.scope));
+// sw 更新是刷新页面的办法: https://juejin.cn/post/6844903792522035208
+let refreshing = false;
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) {
+        return;
+    }
+    refreshing = true;
+    window.location.reload();
+});
 
-console.log('change and compile 5');
+console.log('change and compile 8, is pwa:', isPwa());
 
 ReactDOM.render(
   <React.StrictMode>
