@@ -4,9 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-navigator.serviceWorker.register('sw.js').then(reg => console.log(reg.scope));
+navigator.serviceWorker.register('/pwa-todos/sw.js', { scope: '/pwa-todos/' }).then(reg => console.log(reg.scope));
 
-console.log('change and compile');
+console.log('change and compile 5');
 
 ReactDOM.render(
   <React.StrictMode>
