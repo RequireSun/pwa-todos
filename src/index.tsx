@@ -7,6 +7,7 @@ import './index.css';
 
 navigator.serviceWorker.register('/pwa-todos/sw.js', { scope: '/pwa-todos/' }).then(reg => console.log(reg.scope));
 // sw 更新是刷新页面的办法: https://juejin.cn/post/6844903792522035208
+// 只要更新版本页面就会有闪烁, 需要找个解决办法 (loading 条或许可以解决)
 let refreshing = false;
 navigator.serviceWorker.addEventListener('controllerchange', () => {
     console.log('controllerchange');
