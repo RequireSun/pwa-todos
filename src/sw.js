@@ -9,5 +9,5 @@ precacheAndRoute(self.__WB_MANIFEST || []);
 cleanupOutdatedCaches();
 // registerRoute(/index\.html/, new NetworkFirst());
 // registerRoute(/\/static\//, new NetworkFirst());
-console.log('sw run 8');
+console.log('sw run 10');
 /* eslint-enable no-restricted-globals */

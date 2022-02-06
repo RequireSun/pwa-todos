@@ -9,6 +9,7 @@ navigator.serviceWorker.register('/pwa-todos/sw.js', { scope: '/pwa-todos/' }).t
 // sw 更新是刷新页面的办法: https://juejin.cn/post/6844903792522035208
 let refreshing = false;
 navigator.serviceWorker.addEventListener('controllerchange', () => {
+    console.log('controllerchange');
     if (refreshing) {
         return;
     }
@@ -16,7 +17,7 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
     window.location.reload();
 });
 
-console.log('change and compile 8, is pwa:', isPwa());
+console.log('change and compile 10, is pwa:', isPwa());
 
 ReactDOM.render(
   <React.StrictMode>
