@@ -195,16 +195,17 @@ function matchOne(request: Request) {
 
 const handlerAPI = async ({ request }: RouteHandlerCallbackOptions) => {
     const { cache, offline } = matchOne(request);
+    const reqClone = request.clone();
     let resp: Response;
     try {
         resp = await fetch(request);
         if (resp.status >= 400 && resp.status < 500) {
-            resp = (await offline(request)) as Response;
+            resp = (await offline(reqClone)) as Response;
         } else {
             cache(resp.clone());
         }
     } catch (ex) {
-        resp = (await offline(request)) as Response;
+        resp = (await offline(reqClone)) as Response;
         console.warn('fetch failed, ex:', ex, ', use cache:', resp);
     }
     return Promise.resolve(resp);
