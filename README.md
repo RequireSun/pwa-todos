@@ -2,6 +2,8 @@
 
 [https://pwa-todos.web.cloudendpoint.cn/](https://pwa-todos.web.cloudendpoint.cn/)
 
+[https://qingfuwu.cn/docs/nodejs/cloud-project/quickstart.html](https://qingfuwu.cn/docs/nodejs/cloud-project/quickstart.html)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
