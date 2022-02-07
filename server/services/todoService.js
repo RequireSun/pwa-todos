@@ -92,7 +92,7 @@ class TodoService {
   async update(id, updater, sign) {
     const dbSign = await checkSign(sign);
 
-    const todo = await todoTable.where({_id: ObjectId(id)}).findOne();
+    const todo = await todoTable.where({ _id: ObjectId(id) }).findOne();
     if (!todo) {
       const error = new Error(`todo:${id} not found`);
       error.status = 404;
@@ -100,6 +100,35 @@ class TodoService {
     }
     Object.assign(todo, updater);
     await todoTable.save(todo);
+
+    const { sign: newSign } = await updateSign(dbSign);
+    return { sign: newSign };
+  }
+
+  /**
+   * @param lines {Array<{ _id: string; title: string; done: boolean }>}
+   * @param sign
+   */
+  async coverage(lines, sign) {
+    const dbSign = await checkSign(sign);
+
+    const remains = lines.reduce((map, line) => {
+      map.set(line._id, line);
+      return map;
+    }, new Map());
+
+    const current = await todoTable.where().find();
+    const deletes = current.filter(line => !remains.has(line._id.toHexString()));
+    await Promise.all(deletes.map(toDelete => todoTable.where({ _id: toDelete._id }).delete()));
+
+    const toUpdate = await todoTable.where().find();
+    for (const item of toUpdate) {
+      const cover = remains.get(item._id.toHexString());
+      if (cover) {
+        Object.assign(item, cover, { _id: item._id });
+      }
+    }
+    await todoTable.save(toUpdate);
 
     const { sign: newSign } = await updateSign(dbSign);
     return { sign: newSign };

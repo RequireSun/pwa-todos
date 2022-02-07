@@ -96,6 +96,13 @@ class TodoController {
     const { sign: newSign } = await todoService.update(ctx.params.id, { done: false }, sign);
     ctx.body = { ok: true, sign: newSign };
   }
+
+  async coverage(ctx) {
+    const { 'coordination-sign': sign } = ctx.request.headers;
+    const { list } = ctx.request.body;
+    const { sign: newSign } = await todoService.coverage(list, sign);
+    ctx.body = { ok: true, sign: newSign };
+  }
 }
 
 // 导出 Controller 的实例

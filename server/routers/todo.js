@@ -7,13 +7,15 @@ const router = Router({
 const todoController = require('../controllers/todoController');
 
 // 组装路由
-router.put('/:id/done', todoController.done);
-router.put('/:id/undone', todoController.undone);
 router.get('/', todoController.listAll);
 router.post('/', todoController.create);
+router.put('/', todoController.coverage);
+router.delete('/', todoController.deleteAll);
+
 router.put('/:id', todoController.update);
 router.delete('/:id', todoController.delete);
-router.delete('/', todoController.deleteAll);
+router.put('/:id/done', todoController.done);
+router.put('/:id/undone', todoController.undone);
 
 // Koa 的路由需要调用 routes 函数获取实际用于 use 的函数
 module.exports = router.routes();

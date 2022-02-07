@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { list, create, update, remove, done, undone } from '../../api';
+import classNames from 'classnames';
+import { list, create, update, remove, done, undone, coverage } from '../../api';
+import { setCacheList, openCache, CACHE_KEY_LIST_MODIFY } from '../../offline/api';
 import TodoForm from '../TodoForm';
 import Todo from '../Todo';
 import IconLoading from '../IconLoading';
@@ -9,12 +11,27 @@ function TodoList() {
     const [todos, setTodos] = useState<DataTodo[]>([]);
     const [sign, setSign] = useState<string | null>('');
     const [isLoading, setIsLoading] = useState(true);
+    const [isOffline, setIsOffline] = useState(false);
 
     useEffect(() => {
-        list().then(({ list, sign: _sign }) => {
+        list().then(({ list, local, sign: _sign, isOffline: _isOffline }) => {
             setTodos(list);
             setSign(_sign);
-            setIsLoading(false);
+            setIsOffline(_isOffline);
+            if (local) {
+                // eslint-disable-next-line no-restricted-globals
+                const cover = confirm(`您存在一个本地版本: ${JSON.stringify(local)}, 是否使用该版本覆盖云端版本？`);
+                if (cover) {
+                    coverage(local, _sign).then(({ sign: __sign }) => {
+                        setTodos(local);
+                        setSign(__sign);
+                        setIsLoading(false);
+                    });
+                } else {
+                    openCache().then(cache => cache.delete(CACHE_KEY_LIST_MODIFY));
+                    setIsLoading(false);
+                }
+            }
         });
     }, []);
 
@@ -24,10 +41,14 @@ function TodoList() {
         }
 
         setIsLoading(true);
-        create(todo.title, sign).then(({ result, sign: newSign }) => {
-            setTodos([result, ...todos]);
+        create(todo.title, sign).then(({ result, sign: newSign, isOffline: _isOffline }) => {
+            const newList = [result, ...todos];
+            setTodos(newList);
             setSign(newSign);
             setIsLoading(false);
+            // FIXME 很蠢, 但是暂时只能这么干了
+            //   离线模式下在 sw 里做了, 在线模式下只能手动存了
+            !_isOffline && setCacheList(newList);
         });
     };
 
@@ -37,10 +58,14 @@ function TodoList() {
         }
 
         setIsLoading(true);
-        update(todoId, newValue.title, sign).then(({ sign: newSign }) => {
-            setTodos(prev => prev.map(item => (item._id === todoId ? { ...item, ...newValue } : item)));
+        update(todoId, newValue.title, sign).then(({ sign: newSign, isOffline: _isOffline }) => {
+            const newList = todos.map(item => (item._id === todoId ? { ...item, ...newValue } : item));
+            setTodos(newList);
             setSign(newSign);
             setIsLoading(false);
+            // FIXME 很蠢, 但是暂时只能这么干了
+            //   离线模式下在 sw 里做了, 在线模式下只能手动存了
+            !_isOffline && setCacheList(newList);
         });
     };
 
@@ -50,10 +75,14 @@ function TodoList() {
         }
 
         setIsLoading(true);
-        remove(id, sign).then(({ sign: newSign }) => {
-            setTodos([...todos].filter(todo => todo._id !== id));
+        remove(id, sign).then(({ sign: newSign, isOffline: _isOffline }) => {
+            const newList = todos.filter(todo => todo._id !== id);
+            setTodos(newList);
             setSign(newSign);
             setIsLoading(false);
+            // FIXME 很蠢, 但是暂时只能这么干了
+            //   离线模式下在 sw 里做了, 在线模式下只能手动存了
+            !_isOffline && setCacheList(newList);
         });
     };
 
@@ -68,25 +97,33 @@ function TodoList() {
 
         setIsLoading(true);
         if (current.done) {
-            undone(id, sign).then(({ sign: newSign }) => {
+            undone(id, sign).then(({ sign: newSign, isOffline: _isOffline }) => {
                 current.done = !current.done;
-                setTodos([...todos]);
+                const newList = [...todos];
+                setTodos(newList);
                 setSign(newSign);
                 setIsLoading(false);
+                // FIXME 很蠢, 但是暂时只能这么干了
+                //   离线模式下在 sw 里做了, 在线模式下只能手动存了
+                !_isOffline && setCacheList(newList);
             });
         } else {
-            done(id, sign).then(({ sign: newSign }) => {
+            done(id, sign).then(({ sign: newSign, isOffline: _isOffline }) => {
                 current.done = !current.done;
-                setTodos([...todos]);
+                const newList = [...todos];
+                setTodos(newList);
                 setSign(newSign);
                 setIsLoading(false);
+                // FIXME 很蠢, 但是暂时只能这么干了
+                //   离线模式下在 sw 里做了, 在线模式下只能手动存了
+                !_isOffline && setCacheList(newList);
             });
         }
     };
 
     return (
         <>
-            <div className="conor">Current Sign(Server) is: {sign}</div>
+            <div className={classNames('conor', isOffline ? 'danger' : '')}>Current Sign({isOffline ? 'Offline' : 'Server'}) is: {sign}</div>
             <h1>What is your mission for the day?</h1>
             <TodoForm onSubmit={addTodo} />
             <div className="desc">Click to make it done / undone.</div>
