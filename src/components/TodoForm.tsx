@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import shortId from 'shortid';
 
 function TodoForm(props: { edit?: DataTodoEdit; onSubmit: (todo: DataTodo) => void }) {
-    const [input, setInput] = useState(props.edit ? props.edit.value : '');
+    const [input, setInput] = useState(props.edit ? props.edit.title : '');
 
     const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -17,8 +18,10 @@ function TodoForm(props: { edit?: DataTodoEdit; onSubmit: (todo: DataTodo) => vo
         e.preventDefault();
 
         props.onSubmit({
-            id: Math.floor(Math.random() * 10000),
-            text: input
+            _id: shortId.generate(),
+            title: input,
+            createdAt: '',
+            updatedAt: '',
         });
         setInput('');
     };

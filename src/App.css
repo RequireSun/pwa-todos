@@ -6,6 +6,20 @@
   'Lucida Sans', Arial, sans-serif;
 }
 
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 body {
   background: linear-gradient(
           90deg,
@@ -144,4 +158,35 @@ h1 {
 
 .edit-icon {
   color: #fff;
+}
+
+.conor {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #fff;
+}
+
+.loading-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading-container svg {
+  width: 100px;
+  height: 100px;
+  animation-name: rotate;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }

@@ -1,10 +1,12 @@
 interface DataTodo {
-    id: number;
-    text: string;
-    isComplete?: boolean;
+    _id: string;
+    title: string;
+    done?: boolean;
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface DataTodoEdit {
-    id: null | number;
-    value: string;
+    _id: null | string;
+    title: string;
 }
