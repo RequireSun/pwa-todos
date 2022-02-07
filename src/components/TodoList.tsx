@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { list, create } from '../api';
+import { list, create, update, remove, done, undone } from '../api';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
 import IconLoading from './IconLoading';
@@ -31,27 +31,56 @@ function TodoList() {
     };
 
     const updateTodo = (todoId: string, newValue: DataTodo) => {
-        if (!newValue.title || /^\s*$/.test(newValue.title)) {
+        if (!todoId || !newValue.title || /^\s*$/.test(newValue.title)) {
             return;
         }
 
-        setTodos(prev => prev.map(item => (item._id === todoId ? newValue : item)));
+        setIsLoading(true);
+        update(todoId, newValue.title, sign).then(({ sign: newSign }) => {
+            setTodos(prev => prev.map(item => (item._id === todoId ? newValue : item)));
+            setSign(newSign);
+            setIsLoading(false);
+        });
     };
 
     const removeTodo = (id: string) => {
-        const removedArr = [...todos].filter(todo => todo._id !== id);
+        if (!id) {
+            return;
+        }
 
-        setTodos(removedArr);
+        setIsLoading(true);
+        remove(id, sign).then(({ sign: newSign }) => {
+            setTodos([...todos].filter(todo => todo._id !== id));
+            setSign(newSign);
+            setIsLoading(false);
+        });
     };
 
     const completeTodo = (id: string) => {
-        let updatedTodos = todos.map(todo => {
-            if (todo._id === id) {
-                todo.done = !todo.done;
-            }
-            return todo;
-        });
-        setTodos(updatedTodos);
+        if (!id) {
+            return;
+        }
+        const current = todos.find(t => t._id === id);
+        if (!current) {
+            return;
+        }
+
+        setIsLoading(true);
+        if (current.done) {
+            undone(id, sign).then(({ sign: newSign }) => {
+                current.done = !current.done;
+                setTodos([...todos]);
+                setSign(newSign);
+                setIsLoading(false);
+            });
+        } else {
+            done(id, sign).then(({ sign: newSign }) => {
+                current.done = !current.done;
+                setTodos([...todos]);
+                setSign(newSign);
+                setIsLoading(false);
+            });
+        }
     };
 
     return (

@@ -28,13 +28,15 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async create(ctx) {
-    const { title, done = false, sign } = ctx.request.body;
+    const { 'coordination-sign': sign } = ctx.request.headers;
+    const { title, done = false } = ctx.request.body;
     const { result, sign: newSign } = await todoService.create({ title, done }, sign);
     ctx.body = { result, sign: newSign };
   }
 
   async update(ctx) {
-    const { title, sign } = ctx.request.body;
+    const { 'coordination-sign': sign } = ctx.request.headers;
+    const { title } = ctx.request.body;
     const { sign: newSign } = await todoService.update(ctx.params.id, { title }, sign);
     ctx.body = { ok: true, sign: newSign };
   }
@@ -48,7 +50,7 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async delete(ctx) {
-    const { sign } = ctx.request.body;
+    const { 'coordination-sign': sign } = ctx.request.headers;
     const { sign: newSign } = await todoService.delete(ctx.params.id, sign);
     ctx.body = { ok: true, sign: newSign };
   }
@@ -62,7 +64,7 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async deleteAll(ctx) {
-    const { sign } = ctx.request.body;
+    const { 'coordination-sign': sign } = ctx.request.headers;
     const { sign: newSign } = await todoService.deleteAll(sign);
     ctx.body = { ok: true, sign: newSign };
   }
@@ -76,7 +78,7 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async done(ctx) {
-    const { sign } = ctx.request.body;
+    const { 'coordination-sign': sign } = ctx.request.headers;
     const { sign: newSign } = await todoService.update(ctx.params.id, { done: true }, sign);
     ctx.body = { ok: true, sign: newSign };
   }
@@ -90,7 +92,7 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async undone(ctx) {
-    const { sign } = ctx.request.body;
+    const { 'coordination-sign': sign } = ctx.request.headers;
     const { sign: newSign } = await todoService.update(ctx.params.id, { done: false }, sign);
     ctx.body = { ok: true, sign: newSign };
   }
