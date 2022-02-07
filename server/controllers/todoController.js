@@ -15,8 +15,8 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async listAll(ctx) {
-    const list = await todoService.listAll();
-    ctx.body = {list};
+    const { list, sign } = await todoService.listAll();
+    ctx.body = { list, sign };
   }
 
   /**
@@ -28,9 +28,15 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async create(ctx) {
-    const {title, done = false} = ctx.request.body;
-    const result = await todoService.create({title, done});
-    ctx.body = {result};
+    const { title, done = false, sign } = ctx.request.body;
+    const { result, sign: newSign } = await todoService.create({ title, done }, sign);
+    ctx.body = { result, sign: newSign };
+  }
+
+  async update(ctx) {
+    const { title, sign } = ctx.request.body;
+    const { sign: newSign } = await todoService.update(ctx.params.id, { title }, sign);
+    ctx.body = { ok: true, sign: newSign };
   }
 
   /**
@@ -42,8 +48,9 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async delete(ctx) {
-    await todoService.delete(ctx.params.id);
-    ctx.body = {ok: true};
+    const { sign } = ctx.request.body;
+    const { sign: newSign } = await todoService.delete(ctx.params.id, sign);
+    ctx.body = { ok: true, sign: newSign };
   }
 
   /**
@@ -55,8 +62,9 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async deleteAll(ctx) {
-    await todoService.deleteAll();
-    ctx.body = {ok: true};
+    const { sign } = ctx.request.body;
+    const { sign: newSign } = await todoService.deleteAll(sign);
+    ctx.body = { ok: true, sign: newSign };
   }
 
   /**
@@ -68,8 +76,9 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async done(ctx) {
-    await todoService.update(ctx.params.id, {done: true});
-    ctx.body = {ok: true};
+    const { sign } = ctx.request.body;
+    const { sign: newSign } = await todoService.update(ctx.params.id, { done: true }, sign);
+    ctx.body = { ok: true, sign: newSign };
   }
 
   /**
@@ -81,8 +90,9 @@ class TodoController {
    * @param ctx Koa 的上下文参数
    */
   async undone(ctx) {
-    await todoService.update(ctx.params.id, {done: false});
-    ctx.body = {ok: true};
+    const { sign } = ctx.request.body;
+    const { sign: newSign } = await todoService.update(ctx.params.id, { done: false }, sign);
+    ctx.body = { ok: true, sign: newSign };
   }
 }
 

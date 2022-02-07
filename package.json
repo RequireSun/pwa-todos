@@ -8,7 +8,8 @@
     "@koa/router": "^8.0.2",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
-    "koa-static": "^5.0.0"
+    "koa-static": "^5.0.0",
+    "shortid": "^2.2.16"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",

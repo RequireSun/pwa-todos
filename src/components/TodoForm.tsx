@@ -50,7 +50,7 @@ function TodoForm(props: { edit?: DataTodoEdit; onSubmit: (todo: DataTodo) => vo
                         ref={inputRef}
                     />
                     <button onClick={handleSubmit} className='todo-button'>
-                        Adicionar
+                        Add
                     </button>
                 </>
             )}

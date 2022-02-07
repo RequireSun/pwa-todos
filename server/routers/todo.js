@@ -11,6 +11,7 @@ router.put('/:id/done', todoController.done);
 router.put('/:id/undone', todoController.undone);
 router.get('/', todoController.listAll);
 router.post('/', todoController.create);
+router.put('/:id', todoController.update);
 router.delete('/:id', todoController.delete);
 router.delete('/', todoController.deleteAll);
 
