@@ -22,7 +22,7 @@ jobs:
       - name: Build page
         run: npm run build
       - name: mkdir
-        run: mkdir ./dist && mv ./build/ ./dist/pwa-todos/
+        run: mkdir -p ./dist/build && mv ./build/ ./dist/build/pwa-todos/
       - uses: byteinspire/hosting-deployer-action@v1
         with:
           service-id: '${{ secrets.SERVICE_ID }}'
