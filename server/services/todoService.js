@@ -118,15 +118,15 @@ class TodoService {
     }, new Map());
 
     const current = await todoTable.where().find();
-    const deletes = current.filter(line => !remains.has(line._id.toHexString()));
+    const deletes = current.filter(line => !remains.has(line._id.toString()));
     await Promise.all(deletes.map(toDelete => todoTable.where({ _id: toDelete._id }).delete()));
 
     const toUpdate = await todoTable.where().find();
     for (const item of toUpdate) {
-      const cover = remains.get(item._id.toHexString());
+      const cover = remains.get(item._id.toString());
       if (cover) {
         Object.assign(item, cover, { _id: item._id });
-        remains.delete(item._id.toHexString());
+        remains.delete(item._id.toString());
       }
     }
     await todoTable.save(toUpdate);
