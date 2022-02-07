@@ -30,6 +30,7 @@ jobs:
           # Or you can use file param to directly specify the ziped file path
           directory: ./dist
   deploy_server:
+    # https://github.com/marketplace/actions/deploy-to-byteinspire-cloud-project
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
