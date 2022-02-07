@@ -132,7 +132,10 @@ class TodoService {
     await todoTable.save(toUpdate);
 
     // 剩余的添加一下
-    const creates = remains.values().map(todoTable.create);
+    const creates = [];
+    for (const [, line] of remains.entries()) {
+      creates.push(todoTable.create(line));
+    }
     if (creates.length) {
       await todoTable.save(creates);
     }
