@@ -30,8 +30,10 @@
     "workbox-webpack-plugin": "^6.4.2"
   },
   "scripts": {
+    "clean-move": "rm -rf ./dist/ && mkdir -p ./dist/build && mv ./build/ ./dist/build/pwa-todos/",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "build:site": "npm run build && npm run clean-move",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },

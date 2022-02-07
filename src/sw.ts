@@ -1,9 +1,7 @@
-/* eslint-disable no-restricted-globals */
+// sw inspect: chrome://serviceworker-internals/
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { clientsClaim } from 'workbox-core';
-// import { registerRoute } from 'workbox-routing';
-// import { NetworkFirst } from 'workbox-strategies';
-// sw inspect: chrome://serviceworker-internals/
+import { registerRouteAPI } from './offline/api';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -11,8 +9,6 @@ declare const self: ServiceWorkerGlobalScope;
 self.skipWaiting();
 clientsClaim();
 precacheAndRoute(self.__WB_MANIFEST || []);
+registerRouteAPI();
 cleanupOutdatedCaches();
-// registerRoute(/index\.html/, new NetworkFirst());
-// registerRoute(/\/static\//, new NetworkFirst());
 console.log('sw run 10');
-/* eslint-enable no-restricted-globals */
