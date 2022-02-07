@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { list, create, update, remove, done, undone } from '../api';
-import TodoForm from './TodoForm';
-import Todo from './Todo';
-import IconLoading from './IconLoading';
+import { list, create, update, remove, done, undone } from '../../api';
+import TodoForm from '../TodoForm';
+import Todo from '../Todo';
+import IconLoading from '../IconLoading';
 import './TodoList.css';
 
 function TodoList() {

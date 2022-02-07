@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import App from './components/App/App';
+import reportWebVitals from './utils/reportWebVitals';
 import { isPwa } from './utils/is-pwa';
-import './index.css';
 
 navigator.serviceWorker.register('/pwa-todos/sw.js', { scope: '/pwa-todos/' }).then(reg => console.log(reg.scope));
 // sw 更新是刷新页面的办法: https://juejin.cn/post/6844903792522035208

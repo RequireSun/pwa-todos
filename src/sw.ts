@@ -4,6 +4,9 @@ import { clientsClaim } from 'workbox-core';
 // import { registerRoute } from 'workbox-routing';
 // import { NetworkFirst } from 'workbox-strategies';
 // sw inspect: chrome://serviceworker-internals/
+
+declare const self: ServiceWorkerGlobalScope;
+
 // 即时激活最新 sw: https://stackoverflow.com/questions/40100922/activate-updated-service-worker-on-refresh
 self.skipWaiting();
 clientsClaim();
