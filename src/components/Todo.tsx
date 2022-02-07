@@ -6,7 +6,7 @@ interface Props {
     todos: DataTodo[];
     completeTodo: (id: string) => void;
     removeTodo: (id: string) => void;
-    updateTodo: (id: string, newValue: DataTodo) => void;
+    updateTodo: (id: string, newValue: Partial<DataTodo>) => void;
 }
 
 const Todo = ({ todos, completeTodo, removeTodo, updateTodo }: Props) => {
@@ -15,7 +15,7 @@ const Todo = ({ todos, completeTodo, removeTodo, updateTodo }: Props) => {
         title: ''
     });
 
-    const submitUpdate = (value: DataTodo) => {
+    const submitUpdate = (value: Partial<DataTodo>) => {
         updateTodo(edit._id!, value);
         setEdit({
             _id: null,

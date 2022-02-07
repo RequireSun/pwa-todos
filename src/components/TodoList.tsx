@@ -3,6 +3,7 @@ import { list, create, update, remove, done, undone } from '../api';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
 import IconLoading from './IconLoading';
+import { debug } from 'util';
 
 function TodoList() {
     const [todos, setTodos] = useState<DataTodo[]>([]);
@@ -17,7 +18,7 @@ function TodoList() {
         });
     }, []);
 
-    const addTodo = (todo: DataTodo) => {
+    const addTodo = (todo: Partial<DataTodo>) => {
         if (!todo.title || /^\s*$/.test(todo.title)) {
             return;
         }
@@ -30,14 +31,14 @@ function TodoList() {
         });
     };
 
-    const updateTodo = (todoId: string, newValue: DataTodo) => {
+    const updateTodo = (todoId: string, newValue: Partial<DataTodo>) => {
         if (!todoId || !newValue.title || /^\s*$/.test(newValue.title)) {
             return;
         }
 
         setIsLoading(true);
         update(todoId, newValue.title, sign).then(({ sign: newSign }) => {
-            setTodos(prev => prev.map(item => (item._id === todoId ? newValue : item)));
+            setTodos(prev => prev.map(item => (item._id === todoId ? { ...item, ...newValue } : item)));
             setSign(newSign);
             setIsLoading(false);
         });
