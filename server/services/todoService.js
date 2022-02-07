@@ -29,7 +29,7 @@ class TodoService {
    */
   async listAll() {
     const [list, sign] = await Promise.all([
-      todoTable.where().find(),
+      todoTable.where().sort({ createdAt: -1 }).find(),
       coordinationTable.where({ title: 'todo' }).findOne(),
     ]);
     return { list, sign: sign ? sign.sign : null };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { list } from '../api';
+import { list, create } from '../api';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
 import IconLoading from './IconLoading';
@@ -22,10 +22,12 @@ function TodoList() {
             return;
         }
 
-        const newTodos = [todo, ...todos];
-
-        setTodos(newTodos);
-        console.log(...todos);
+        setIsLoading(true);
+        create(todo.title, sign).then(({ result, sign: newSign }) => {
+            setTodos([result, ...todos]);
+            setSign(newSign);
+            setIsLoading(false);
+        });
     };
 
     const updateTodo = (todoId: string, newValue: DataTodo) => {

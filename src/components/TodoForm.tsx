@@ -45,7 +45,7 @@ function TodoForm(props: { edit?: DataTodoEdit; onSubmit: (todo: DataTodo) => vo
             ) : (
                 <>
                     <input
-                        placeholder='Adicionar tarefa...'
+                        placeholder='Input text here...'
                         value={input}
                         onChange={handleChange}
                         name='text'
