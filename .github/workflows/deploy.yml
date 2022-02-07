@@ -4,13 +4,15 @@ on:
     branches:
       - master
 jobs:
-  deploy:
+  # https://github.com/marketplace/actions/deploy-to-byteinspire-hosting
+  build_and_deploy:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [14.x]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      # build steps here:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -19,8 +21,30 @@ jobs:
         run: npm install
       - name: Build page
         run: npm run build
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+      - uses: byteinspire/hosting-deployer-action@v1
         with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./build
+          service-id: '${{ secrets.SERVICE_ID }}'
+          token: '${{ secrets.ACCESS_TOKEN }}'
+          # Or you can use file param to directly specify the ziped file path
+          directory: ./build
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        node-version: [14.x]
+#    steps:
+#      - uses: actions/checkout@v1
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#      - name: Install Packages
+#        run: npm install
+#      - name: Build page
+#        run: npm run build
+#      - name: Deploy to gh-pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+#          publish_dir: ./build
