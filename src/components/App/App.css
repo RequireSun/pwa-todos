@@ -53,6 +53,11 @@ h1 {
   color: #aaa;
 }
 
+.extra {
+  margin: 16px 32px 0;
+  color: #aaa;
+}
+
 .conor {
   position: absolute;
   top: 5px;

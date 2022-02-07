@@ -96,6 +96,7 @@ function TodoList() {
                 removeTodo={removeTodo}
                 updateTodo={updateTodo}
             />
+            <div className="extra">本示例程序只处理了有 / 无网络时进入页面且持续操作的场景，未处理页面内编辑时网络变化的复杂场景。</div>
             {isLoading ? (
                 <div className="loading-wrapper">
                     <div className="loading-container">
