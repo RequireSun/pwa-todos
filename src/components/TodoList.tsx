@@ -3,7 +3,7 @@ import { list, create, update, remove, done, undone } from '../api';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
 import IconLoading from './IconLoading';
-import { debug } from 'util';
+import './TodoList.css';
 
 function TodoList() {
     const [todos, setTodos] = useState<DataTodo[]>([]);
@@ -86,6 +86,16 @@ function TodoList() {
 
     return (
         <>
+            <div className="conor">Current Sign(Server) is: {sign}</div>
+            <h1>What is your mission for the day?</h1>
+            <TodoForm onSubmit={addTodo} />
+            <div className="desc">Click to make it done / undone.</div>
+            <Todo
+                todos={todos}
+                completeTodo={completeTodo}
+                removeTodo={removeTodo}
+                updateTodo={updateTodo}
+            />
             {isLoading ? (
                 <div className="loading-wrapper">
                     <div className="loading-container">
@@ -93,15 +103,6 @@ function TodoList() {
                     </div>
                 </div>
             ) : null}
-            <div className="conor">Current Sign(Server) is: {sign}</div>
-            <h1>What is your mission for the day?</h1>
-            <TodoForm onSubmit={addTodo} />
-            <Todo
-                todos={todos}
-                completeTodo={completeTodo}
-                removeTodo={removeTodo}
-                updateTodo={updateTodo}
-            />
         </>
     );
 }

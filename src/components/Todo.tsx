@@ -32,18 +32,25 @@ const Todo = ({ todos, completeTodo, removeTodo, updateTodo }: Props) => {
             {todos.map((todo, index) => (
                 <div
                     className={todo.done ? 'todo-row complete' : 'todo-row'}
+                    onClick={() => completeTodo(todo._id)}
                     key={index}
                 >
-                    <div key={todo._id} onClick={() => completeTodo(todo._id)}>
+                    <div key={todo._id}>
                         {todo.title}
                     </div>
                     <div className='icons'>
                         <AiFillCloseCircle
-                            onClick={() => removeTodo(todo._id)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                removeTodo(todo._id);
+                            }}
                             className='delete-icon'
                         />
                         <AiFillEdit
-                            onClick={() => setEdit({ _id: todo._id, title: todo.title })}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setEdit({_id: todo._id, title: todo.title});
+                            }}
                             className='edit-icon'
                         />
                     </div>
