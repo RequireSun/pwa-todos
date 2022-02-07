@@ -14,7 +14,7 @@ async function checkSign(sign) {
 
 async function updateSign(dbSign) {
   // 连更新带保存
-  return coordinationTable.save(Object.assign(dbSign ?? {}, { title: 'todo', sign: shortId.generate() }));
+  return coordinationTable.save(Object.assign(dbSign || {}, { title: 'todo', sign: shortId.generate() }));
 }
 
 /**
