@@ -15,7 +15,7 @@ export async function list(): Promise<{ list: DataTodo[]; sign: string | null; l
 
 export async function coverage(list: DataTodo[], sign: string | null) {
     const resp = await fetch(URL_ALL, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Coordination-Sign': sign || '',

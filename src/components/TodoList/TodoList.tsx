@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { list, create, update, remove, done, undone, coverage } from '../../api';
-import { setCacheList, openCache, CACHE_KEY_LIST_MODIFY } from '../../offline/api';
+import { setCacheList, openCache, CACHE_KEY_LIST_MODIFY, removeCacheListModify } from '../../offline/api';
 import TodoForm from '../TodoForm';
 import Todo from '../Todo';
 import IconLoading from '../IconLoading';
@@ -20,17 +20,20 @@ function TodoList() {
             setIsOffline(_isOffline);
             if (local) {
                 // eslint-disable-next-line no-restricted-globals
-                const cover = confirm(`您存在一个本地版本: ${JSON.stringify(local)}, 是否使用该版本覆盖云端版本？`);
+                const cover = confirm(`您存在一个本地版本, 是否使用该版本覆盖云端版本？\n${JSON.stringify(local)}`);
                 if (cover) {
                     coverage(local, _sign).then(({ sign: __sign }) => {
                         setTodos(local);
                         setSign(__sign);
                         setIsLoading(false);
+                        removeCacheListModify();
                     });
                 } else {
                     openCache().then(cache => cache.delete(CACHE_KEY_LIST_MODIFY));
                     setIsLoading(false);
                 }
+            } else {
+                setIsLoading(false);
             }
         });
     }, []);

@@ -77,6 +77,11 @@ export async function setCacheListModify(list: DataTodo[]) {
     await cache.put(CACHE_KEY_LIST_MODIFY, genResponse(JSON.stringify(list)));
 }
 
+export async function removeCacheListModify() {
+    const cache = await openCache();
+    await cache.delete(CACHE_KEY_LIST_MODIFY);
+}
+
 async function getCacheSign() {
     const cache = await openCache();
     const resp = await cache.match(CACHE_KEY_SIGN);

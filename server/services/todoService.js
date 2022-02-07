@@ -126,9 +126,16 @@ class TodoService {
       const cover = remains.get(item._id.toHexString());
       if (cover) {
         Object.assign(item, cover, { _id: item._id });
+        remains.delete(item._id.toHexString());
       }
     }
     await todoTable.save(toUpdate);
+
+    // 剩余的添加一下
+    const creates = remains.values().map(todoTable.create);
+    if (creates.length) {
+      await todoTable.save(creates);
+    }
 
     const { sign: newSign } = await updateSign(dbSign);
     return { sign: newSign };
